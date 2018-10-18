@@ -1,0 +1,12 @@
+services:
+  - docker
+deploy:
+  docker build -t docker pull dayanandk/sample:1.0 .
+  docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+  docker push docker pull dayanandk/sample:1.0
+  on:
+    branch: master
+after_success:
+  - echo $TRAVIS_BUILD_NUMBER
+addons:
+  artifacts: true
