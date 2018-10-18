@@ -1,9 +1,9 @@
 services:
   - docker
 deploy:
-  - docker build -t docker pull dayanandk/sample:1.0 .
-  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-  - docker push docker pull dayanandk/sample:1.0
+  provider: script
+  script: bash docker_push.sh
+  skip_cleanup: true
   on:
     branch: master
 after_success:
