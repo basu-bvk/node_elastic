@@ -1,9 +1,17 @@
 services:
   - docker
 deploy:
-  provider: script
-  script: bash docker_push.sh
-  skip_cleanup: true
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set default.region us-west-2
+    - $(aws ecr get-login --no-include-email --region us-west-2)
+    - docker build -t shrigowri .
+    - docker tag shrigowri:latest 574137776403.dkr.ecr.us-west-2.amazonaws.com/shrigowri:latest
+    - docker push 574137776403.dkr.ecr.us-west-2.amazonaws.com/shrigowri:latest
+  only:
+    - master
+  tags:
+    - docker
   on:
     branch: master
 after_success:
